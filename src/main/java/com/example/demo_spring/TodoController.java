@@ -7,45 +7,46 @@ import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/todo")
 public class TodoController {
     @Autowired
     private TodoService todoservice;
 
-    @GetMapping("/get")
-    public String getTodo(){
-        return "todo";
-    }
-
 //    @GetMapping("/{id}")
 //    String printId(@PathVariable long id){
 //        return "welcome to product "+id;
 //    }
 
-    @GetMapping("")
-    String printIdPara(@RequestParam String username, @RequestParam String password){
-        return "welcome "+username+" password: "+password;
-    }
-
     @PostMapping("/create")
     ResponseEntity<Todo> createUser(@RequestBody Todo todo){
+
         return new ResponseEntity<>(todoservice.createTodo(todo), HttpStatus.CREATED);
     }
 
+    @GetMapping
+    ResponseEntity<List<Todo>> getTodos(){
+        return new ResponseEntity<>(todoservice.getTodos(),HttpStatus.OK);
+    }
     @GetMapping("/{id}")
     ResponseEntity<Todo> getTodoById(@PathVariable long id){
-        return new ResponseEntity<>(todoservice.getTodoById(id),HttpStatus.OK);
+        try{
+            Todo createdTodo = todoservice.getTodoById(id);
+            return new ResponseEntity<>(createdTodo,HttpStatus.OK);
+        }catch(RuntimeException exception) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
     }
 
-
-    @PutMapping("/{id}")
-    String updateId(@PathVariable long id){
-        return "updating id "+id;
+    @PutMapping
+    ResponseEntity<Todo> updateTodoById(@RequestBody Todo  todo){
+        return new ResponseEntity<>(todoservice.updateTodo(todo),HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    String deleteId(@PathVariable long id){
-        return "deleting id "+id;
+    void deleteId(@PathVariable long id){
+        todoservice.deleteTodoById(id);
     }
 }
