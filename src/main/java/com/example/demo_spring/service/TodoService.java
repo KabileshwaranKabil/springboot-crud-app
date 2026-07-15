@@ -1,11 +1,10 @@
-package com.example.demo_spring;
-import com.example.demo_spring.Models.Todo;
+package com.example.demo_spring.service;
+import com.example.demo_spring.model.Todo;
 //import org.hibernate.query.Page;
+import com.example.demo_spring.repository.TodoRepository;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

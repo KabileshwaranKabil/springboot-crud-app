@@ -1,11 +1,13 @@
-package com.example.demo_spring;
+package com.example.demo_spring.controller;
 
-import com.example.demo_spring.Models.Todo;
+import com.example.demo_spring.model.Todo;
+import com.example.demo_spring.service.TodoService;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -38,6 +40,11 @@ public class TodoController {
     ResponseEntity<Page<Todo>> getTodosPaged(@RequestParam int page,@RequestParam int size){
         return new ResponseEntity<>(todoservice.getAllTodoPages(page,size),HttpStatus.OK);
     }
+
+    @ApiResponses(value={
+            @ApiResponse(responseCode = "200", description = "Todo retrieved successfully"),
+            @ApiResponse(responseCode = "404", description = "Todo was not found")
+    })
     @GetMapping("/{id}")
     ResponseEntity<Todo> getTodoById(@PathVariable long id){
         try{
